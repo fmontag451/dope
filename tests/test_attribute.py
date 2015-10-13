@@ -22,21 +22,22 @@ import dope
 # TODO: add multiple injectors fixture
 
 @pytest.fixture
-def injector():
+def config():
     return dope.Injector(
         attr_dependency_1="ATTR_1",
-        attr_dependency_2="ATTR_2",
+        configured_attribute_2="ATTR_2",
         dependency_1="DEP_1",
         dependency_2="DEP_1",
     )
 
 
 class TestClass(object):
-    attr_dependency_1 = dope.attr(dope.Key())  # retrieve key directly from attribute name
 
-    attr_dependency_2 = dope.attr(dope.Key("configured_attribute_2"))  # explicit key
+    attr_dependency_1 = dope.Key()  # retrieve key directly from attribute name
 
-    @dope.register(dependency1=dope.Key(), dependency2=dope.Key())
+    attr_dependency_2 = dope.Key("configured_attribute_2")  # explicit key
+
+    @dope.register(dependency_1=dope.Key(), dependency_2=dope.Key())
     def __init__(self, arg1, arg2, dependency_1, dependency_2):
         self.dependency_1 = dependency_1
         self.dependency_2 = dependency_2
@@ -49,5 +50,12 @@ class TestClass(object):
         )
 
 
-def test_injection(injector):
-    result0 = injector.get(TestClass)
+def test_injection(config):
+    inst = config.get(TestClass, arg1='arg1', arg2='arg2')
+    assert isinstance(inst, TestClass)
+    # Check constructor injection
+    assert config['dependency_1'] == inst.dependency_1
+    assert config['dependency_2'] == inst.dependency_2
+    # Check attributes injection
+    assert config['attr_dependency_1'] == inst.attr_dependency_1
+    assert config['configured_attribute_2'] == inst.attr_dependency_2
