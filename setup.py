@@ -52,7 +52,7 @@ if __name__ == "__main__":
             scripts.append(filepath)
 
     # search packages
-    root_packages = ['automaton']
+    root_packages = ['dope']
     packages = []
     for package in root_packages:
         package_dirname = os.path.join(DIRNAME, package)
