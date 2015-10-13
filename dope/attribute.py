@@ -19,13 +19,24 @@ __all__ = (
 )
 
 
-def attr(*args, **kwargs):
-    pass
+def attr(value):
+    return InjectedAttribute(value)
 
 
 class InjectedAttribute(object):
-    def __init__(self, cls):
-        self._cls = cls
+    def __init__(self, value):
+        self._value = value
 
     def __get__(self, instance, owner):
+        """ Enables data descriptor semantics on injected attributes. """
         pass
+
+    def __set__(self, instance, value):  # TODO: do we really need read-only semantics?
+        """ Enables data descriptor semantics on injected attributes.
+
+        Raises
+        ------
+        AttributeError
+            To enforce read-only data descriptor semantics.
+        """
+        raise AttributeError("Can't set attribute")
