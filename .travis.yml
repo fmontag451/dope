@@ -23,6 +23,7 @@ notifications:
   email:
     recipients:
       - toroidh@gmail.com
+      - simone.campagna11@gmail.com
     on_success: change
     on_failure: always
 
