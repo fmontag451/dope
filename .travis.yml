@@ -24,6 +24,7 @@ notifications:
     recipients:
       - toroidh@gmail.com
       - simone.campagna11@gmail.com
+      - massimiliano.culpo@gmail.com
     on_success: change
     on_failure: always
 
