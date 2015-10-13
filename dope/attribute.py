@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2015 Simone Campagna
+# Copyright 2015 Federico Ficarelli
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,26 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dope - dependency injection framework
+__all__ = (
+    'attr',
+)
 
- >>> @register(y=Key("y_value"))
- ... def function(x, y, z):
- ...     return x + y + z
- ...
- >>> injector = Injector()
- >>> injector['y_value'] = 2
- >>> injector.get(function, x=10, y=20, z=30)
- 60
- >>> injector.get(function, x=10, z=30)
- 42
- >>>
 
-"""
+def attr(*args, **kwargs):
+    pass
 
-from .error import *
-from .inject import *
-from .registry import *
-from .trove import *
-from .value import *
-from .injector import *
-from .attribute import *
+
+class InjectedAttribute(object):
+    def __init__(self, cls):
+        self._cls = cls
+
+    def __get__(self, instance, owner):
+        pass
