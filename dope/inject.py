@@ -1,13 +1,30 @@
-__all__ = (
-    'inject',
-)
+# -*- coding: utf-8 -*-
+#
+# Copyright 2015 Simone Campagna
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import functools
 import inspect
 
 from .error import InjectError
 from .value import Getter
-    
+
+__all__ = (
+    'inject',
+)
+
+
 def inject(**inject_kwargs):
     def inject_decorator(func):
         _sig = inspect.signature(func)
@@ -19,6 +36,7 @@ def inject(**inject_kwargs):
             else:
                 raise InjectError("cannot inject parameter {} to function {}".format(arg_name, func.__name__))
             _inj_kwargs[arg_name] = arg_value
+
         @functools.wraps(func)
         def wrap(*args, **kwargs):
             bound_args = _sig.bind_partial(*args, **kwargs)
@@ -38,9 +56,11 @@ def inject(**inject_kwargs):
             if fill_kwargs:
                 call_kwargs.update(fill_kwargs)
             return func(*call_args, **call_kwargs)
-            #py3.5:
-            #argdict = {arg: inject_args[arg]() for arg in unbound_args}
-            #bound_args.apply_defaults(**argdict)
-            #return func(*bound_args.args, **bound_args.kwargs)
+            # py3.5:
+            # argdict = {arg: inject_args[arg]() for arg in unbound_args}
+            # bound_args.apply_defaults(**argdict)
+            # return func(*bound_args.args, **bound_args.kwargs)
+
         return wrap
+
     return inject_decorator
