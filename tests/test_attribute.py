@@ -54,8 +54,8 @@ def test_injection(config):
     inst = config.get(TestClass, arg1='arg1', arg2='arg2')
     assert isinstance(inst, TestClass)
     # Check constructor injection
-    assert config['dependency_1'] == inst.dependency_1
-    assert config['dependency_2'] == inst.dependency_2
+    assert config['dependency_1']() == inst.dependency_1
+    assert config['dependency_2']() == inst.dependency_2
     # Check attributes injection
-    assert config['attr_dependency_1'] == inst.attr_dependency_1
-    assert config['configured_attribute_2'] == inst.attr_dependency_2
+    assert config['attr_dependency_1']() == inst.attr_dependency_1
+    assert config['configured_attribute_2']() == inst.attr_dependency_2
